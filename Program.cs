@@ -1,58 +1,61 @@
 ﻿using System;
 
-class FootballTeam
+class Competitor
 {
-    private string name;
-    private int goalsScored;
-    private int goalsConceded;
-    private int points;
+    private string LastName;
+    private string Society;
+    private int Jump1;
+    private int Jump2;
+    private int TotalJump;
+    private bool Disqualified;
 
-    public string Name => name;
-    public int GoalsScored => goalsScored;
-    public int GoalsConceded => goalsConceded;
-    public int Points => points;
-
-    public FootballTeam(string name, int goalsScored, int goalsConceded)
+    public Competitor(string lastName, string society, int jump1, int jump2)
     {
-        this.name = name;
-        this.goalsScored = goalsScored;
-        this.goalsConceded = goalsConceded;
-        points = 0;
+        LastName = lastName;
+        Society = society;
+        Jump1 = jump1;
+        Jump2 = jump2;
+        TotalJump = jump1 + jump2;
+        Disqualified = false;
     }
 
-    public void PlayMatch(int result)
+    private int GetTotalJump()
     {
-        if (result == 1)
+        return TotalJump;
+    }
+
+    public void DisqualifyCompetitor()
+    {
+        Disqualified = true;
+    }
+
+    public bool IsDisqualified()
+    {
+        return Disqualified;
+    }
+
+    public static void SortCompetitorsByTotalJump(ref Competitor[] competitors)
+    {
+        for (int i = 0; i < competitors.Length - 1; i++)
         {
-            points += 3;
+            for (int j = i + 1; j < competitors.Length; j++)
+            {
+                if (competitors[i].GetTotalJump() < competitors[j].GetTotalJump())
+                {
+                    Competitor temp = competitors[i];
+                    competitors[i] = competitors[j];
+                    competitors[j] = temp;
+                }
+            }
         }
-        else if (result == 0)
+    }
+
+    public void DisplayCompetitor()
+    {
+        if (!IsDisqualified())
         {
-            points += 0;
+            Console.WriteLine($"Фамилия: {LastName}\t | Общество: {Society}\t | Попытка 1: {Jump1}\t | Попытка 2: {Jump2}\t | Результат: {TotalJump}");
         }
-        else
-        {
-            points += 1;
-        }
-    }
-
-    public string PrintTeamInfo()
-    {
-        return $"{Name}: {Points} очков";
-    }
-}
-
-class WomenFootballTeam : FootballTeam
-{
-    public WomenFootballTeam(string name, int goalsScored, int goalsConceded) : base(name, goalsScored, goalsConceded)
-    {
-    }
-}
-
-class MenFootballTeam : FootballTeam
-{
-    public MenFootballTeam(string name, int goalsScored, int goalsConceded) : base(name, goalsScored, goalsConceded)
-    {
     }
 }
 
@@ -60,46 +63,23 @@ class Program
 {
     static void Main()
     {
-        FootballTeam[] teams = new FootballTeam[6];
-        teams[0] = new MenFootballTeam("Винлайн", 1, 1);
-        teams[1] = new MenFootballTeam("ВанВин", 3, 1);
-        teams[2] = new MenFootballTeam("Лидер", 5, 2);
-        teams[3] = new WomenFootballTeam("Чемпион", 4, 3);
-        teams[4] = new WomenFootballTeam("Звезда", 3, 3);
-        teams[5] = new WomenFootballTeam("Герой", 1, 3);
-
-        for (int i = 0; i < teams.Length; i++)
+        Competitor[] competitors = new Competitor[5]
         {
-            for (int j = i + 1; j < teams.Length; j++)
-            {
-                int scoreTeam1 = teams[i].GoalsScored - teams[j].GoalsConceded;
-                int scoreTeam2 = teams[j].GoalsScored - teams[i].GoalsConceded;
+            new Competitor("Ivanov ", "A", 5, 4),
+            new Competitor("Petrov ", "B", 4, 3),
+            new Competitor("Cidorov", "C", 2, 3),
+            new Competitor("Dorokov ", "D", 3, 3),
+            new Competitor("Epihov ", "E", 1, 2),
+        };
 
-                if (scoreTeam1 > scoreTeam2)
-                {
-                    teams[i].PlayMatch(3);
-                    teams[j].PlayMatch(0);
-                }
-                else if (scoreTeam1 < scoreTeam2)
-                {
-                    teams[i].PlayMatch(0);
-                    teams[j].PlayMatch(3);
-                }
-                else
-                {
-                    teams[i].PlayMatch(1);
-                    teams[j].PlayMatch(1);
-                }
-            }
-        }
+        competitors[2].DisqualifyCompetitor();
 
-        Array.Sort(teams, (x, y) => y.Points.CompareTo(x.Points));
+        Competitor.SortCompetitorsByTotalJump(ref competitors);
 
-        Console.WriteLine("Таблица результатов (отсортировано по очкам):");
-        for (int i = 0; i < teams.Length; i++)
+
+        foreach (var competitor in competitors)
         {
-            string teamType = teams[i] is MenFootballTeam ? "мужская команда" : "женская команда";
-            Console.WriteLine($"{i + 1}. {teams[i].Name} {teamType}: {teams[i].Points} очков");
+            competitor.DisplayCompetitor();
         }
     }
 }
