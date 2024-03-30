@@ -1,0 +1,14 @@
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\bin\Debug\net7.0\7 лаб 3.exe
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\bin\Debug\net7.0\7 лаб 3.deps.json
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\bin\Debug\net7.0\7 лаб 3.runtimeconfig.json
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\bin\Debug\net7.0\7 лаб 3.dll
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\bin\Debug\net7.0\7 лаб 3.pdb
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\7 лаб 3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\7 лаб 3.AssemblyInfoInputs.cache
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\7 лаб 3.AssemblyInfo.cs
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\7 лаб 3.csproj.CoreCompileInputs.cache
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\7 лаб 3.dll
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\refint\7 лаб 3.dll
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\7 лаб 3.pdb
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\7 лаб 3.genruntimeconfig.cache
+C:\Users\pushk\source\repos\7 лаб 3\7 лаб 3\obj\Debug\net7.0\ref\7 лаб 3.dll
