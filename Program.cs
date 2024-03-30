@@ -1,81 +1,58 @@
 ﻿using System;
-using System.Linq;
 
-abstract class Player
+class FootballTeam
 {
-    private string LastName;
+    private string name;
+    private int goalsScored;
+    private int goalsConceded;
+    private int points;
 
-    public Player(string lastName)
+    public string Name => name;
+    public int GoalsScored => goalsScored;
+    public int GoalsConceded => goalsConceded;
+    public int Points => points;
+
+    public FootballTeam(string name, int goalsScored, int goalsConceded)
     {
-        LastName = lastName;
+        this.name = name;
+        this.goalsScored = goalsScored;
+        this.goalsConceded = goalsConceded;
+        points = 0;
     }
 
-    public string GetLastName()
+    public void PlayMatch(int result)
     {
-        return LastName;
+        if (result == 1)
+        {
+            points += 3;
+        }
+        else if (result == 0)
+        {
+            points += 0;
+        }
+        else
+        {
+            points += 1;
+        }
     }
 
-    public abstract void AddPenalty();
-    public abstract bool IsExcluded();
-}
-
-class HockeyPlayer : Player
-{
-    private int TotalPenaltyTime;
-
-    public HockeyPlayer(string lastName, int totalPenaltyTime) : base(lastName)
+    public string PrintTeamInfo()
     {
-        TotalPenaltyTime = totalPenaltyTime;
-    }
-
-    public override void AddPenalty()
-    {
-        TotalPenaltyTime += 2;
-    }
-
-    public override bool IsExcluded()
-    {
-        return TotalPenaltyTime >= 10;
-    }
-
-    public int GetTotalPenaltyTime()
-    {
-        return TotalPenaltyTime;
-    }
-
-    public void DisplayPlayer()
-    {
-        Console.WriteLine($"{GetLastName()}\t{TotalPenaltyTime} мин");
+        return $"{Name}: {Points} очков";
     }
 }
 
-class BasketballPlayer : Player
+class WomenFootballTeam : FootballTeam
 {
-    private int Fouls;
-
-    public BasketballPlayer(string lastName, int fouls) : base(lastName)
+    public WomenFootballTeam(string name, int goalsScored, int goalsConceded) : base(name, goalsScored, goalsConceded)
     {
-        Fouls = fouls;
     }
+}
 
-    public override void AddPenalty()
+class MenFootballTeam : FootballTeam
+{
+    public MenFootballTeam(string name, int goalsScored, int goalsConceded) : base(name, goalsScored, goalsConceded)
     {
-        Fouls++;
-    }
-
-    public override bool IsExcluded()
-    {
-        return Fouls >= 4;
-    }
-
-    public int GetFouls()
-    {
-        return Fouls;
-    }
-
-    public void DisplayPlayer()
-    {
-        Console.WriteLine($"{GetLastName()}\t{Fouls} фолов");
     }
 }
 
@@ -83,25 +60,46 @@ class Program
 {
     static void Main()
     {
-        Player[] players = new Player[5];
-        players[0] = new HockeyPlayer("Иванов", 4);
-        players[1] = new HockeyPlayer("Петров", 5);
-        players[2] = new BasketballPlayer("Сидоров", 1);
-        players[3] = new BasketballPlayer("Дорофеев", 4);
-        players[4] = new BasketballPlayer("Федоров", 3);
+        FootballTeam[] teams = new FootballTeam[6];
+        teams[0] = new MenFootballTeam("Винлайн", 1, 1);
+        teams[1] = new MenFootballTeam("ВанВин", 3, 1);
+        teams[2] = new MenFootballTeam("Лидер", 5, 2);
+        teams[3] = new WomenFootballTeam("Чемпион", 4, 3);
+        teams[4] = new WomenFootballTeam("Звезда", 3, 3);
+        teams[5] = new WomenFootballTeam("Герой", 1, 3);
 
-        var candidates = players.Where(p => !p.IsExcluded()).OrderBy(p => p is HockeyPlayer ? ((HockeyPlayer)p).GetTotalPenaltyTime() : ((BasketballPlayer)p).GetFouls());
-
-        foreach (var player in candidates)
+        for (int i = 0; i < teams.Length; i++)
         {
-            if (player is HockeyPlayer)
+            for (int j = i + 1; j < teams.Length; j++)
             {
-                ((HockeyPlayer)player).DisplayPlayer();
+                int scoreTeam1 = teams[i].GoalsScored - teams[j].GoalsConceded;
+                int scoreTeam2 = teams[j].GoalsScored - teams[i].GoalsConceded;
+
+                if (scoreTeam1 > scoreTeam2)
+                {
+                    teams[i].PlayMatch(3);
+                    teams[j].PlayMatch(0);
+                }
+                else if (scoreTeam1 < scoreTeam2)
+                {
+                    teams[i].PlayMatch(0);
+                    teams[j].PlayMatch(3);
+                }
+                else
+                {
+                    teams[i].PlayMatch(1);
+                    teams[j].PlayMatch(1);
+                }
             }
-            else if (player is BasketballPlayer)
-            {
-                ((BasketballPlayer)player).DisplayPlayer();
-            }
+        }
+
+        Array.Sort(teams, (x, y) => y.Points.CompareTo(x.Points));
+
+        Console.WriteLine("Таблица результатов (отсортировано по очкам):");
+        for (int i = 0; i < teams.Length; i++)
+        {
+            string teamType = teams[i] is MenFootballTeam ? "мужская команда" : "женская команда";
+            Console.WriteLine($"{i + 1}. {teams[i].Name} {teamType}: {teams[i].Points} очков");
         }
     }
 }
